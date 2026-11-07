@@ -1,0 +1,283 @@
+import { Resume } from '@/types/resume';
+
+export const sampleResumes: Resume[] = [
+  {
+    id: 'res-default-1',
+    userId: 'user-google-1',
+    title: 'Senior Full Stack & AI Engineer',
+    targetRole: 'Staff / Senior Full Stack Engineer',
+    createdAt: new Date(Date.now() - 86400000 * 3).toISOString(),
+    updatedAt: new Date(Date.now() - 3600000 * 2).toISOString(),
+    themeColor: 'cobalt',
+    templateId: 'modern-compact',
+    fontFamily: 'sans',
+    fontSize: 'normal',
+    personalInfo: {
+      fullName: 'Alex Vance',
+      title: 'Senior Full Stack & Cloud Architect',
+      email: 'alex.vance@techfrontier.io',
+      phone: '+1 (555) 234-8901',
+      location: 'San Francisco, CA (Open to Remote)',
+      website: 'https://alexvance.dev',
+      linkedin: 'https://linkedin.com/in/alexvance-cloud',
+      github: 'https://github.com/alexvance-ai',
+      summary: 'High-impact software architect with 7+ years of experience leading cross-functional teams in building distributed Next.js and cloud systems. Pioneered machine learning data pipelines processing 12M+ daily events with 99.98% uptime. Passionate about developer tooling, real-time web applications, and resilient cloud infrastructure.',
+    },
+    sections: [
+      {
+        id: 'sec-exp',
+        type: 'experience',
+        title: 'Work Experience',
+        visible: true,
+        items: [
+          {
+            id: 'exp-1',
+            role: 'Lead Full Stack Engineer',
+            company: 'Veloce AI Systems',
+            location: 'San Francisco, CA',
+            startDate: '2023-01',
+            endDate: '',
+            current: true,
+            description: 'Lead engineering for enterprise AI workflow automation platform serving Fortune 500 clients.',
+            bullets: [
+              'Architected low-latency Next.js 15 enterprise platform handling 4.5M monthly active users with sub-100ms edge rendering.',
+              'Spearheaded LLM vector caching mechanism using Redis and PostgreSQL/Neon, cutting inference API costs by 42%.',
+              'Mentored 8 mid-level engineers, instituted automated CI/CD with Jest/Playwright achieving 92% code coverage.',
+            ],
+          },
+          {
+            id: 'exp-2',
+            role: 'Senior Software Engineer',
+            company: 'Stripe Ecosystem Partner',
+            location: 'Austin, TX',
+            startDate: '2020-04',
+            endDate: '2022-12',
+            current: false,
+            description: 'Engineered merchant onboarding and real-time reconciliation pipelines.',
+            bullets: [
+              'Designed idempotent payment webhook ingestion queue handling 8,000 requests/sec during peak flash sales.',
+              'Refactored legacy monolith into modular TypeScript microservices, reducing deployment cycle from 4 days to 25 minutes.',
+              'Collaborated with product leadership to ship self-serve analytics dashboard boosting user retention by 28%.',
+            ],
+          },
+        ],
+      },
+      {
+        id: 'sec-skills',
+        type: 'skills',
+        title: 'Core Technical Skills',
+        visible: true,
+        items: [
+          {
+            id: 'skill-grp-1',
+            category: 'Frontend & Frameworks',
+            skills: [
+              { id: 'sk-1', name: 'React 19 & Next.js 16', level: 'Expert' },
+              { id: 'sk-2', name: 'TypeScript', level: 'Expert' },
+              { id: 'sk-3', name: 'Tailwind CSS & Radix UI', level: 'Expert' },
+              { id: 'sk-4', name: 'State (Zustand, React Query)', level: 'Advanced' },
+            ],
+          },
+          {
+            id: 'skill-grp-2',
+            category: 'Backend & Cloud',
+            skills: [
+              { id: 'sk-5', name: 'Node.js & Python', level: 'Expert' },
+              { id: 'sk-6', name: 'PostgreSQL & Neon DB', level: 'Expert' },
+              { id: 'sk-7', name: 'Docker & Kubernetes', level: 'Advanced' },
+              { id: 'sk-8', name: 'AWS & Edge Functions', level: 'Advanced' },
+            ],
+          },
+          {
+            id: 'skill-grp-3',
+            category: 'AI & Engineering Practices',
+            skills: [
+              { id: 'sk-9', name: 'LLM Prompt Engineering & RAG', level: 'Advanced' },
+              { id: 'sk-10', name: 'System Architecture', level: 'Expert' },
+              { id: 'sk-11', name: 'CI/CD & DevOps', level: 'Advanced' },
+            ],
+          },
+        ],
+      },
+      {
+        id: 'sec-edu',
+        type: 'education',
+        title: 'Education',
+        visible: true,
+        items: [
+          {
+            id: 'edu-1',
+            degree: 'B.S. in Computer Science',
+            institution: 'University of California, Berkeley',
+            location: 'Berkeley, CA',
+            startDate: '2016-08',
+            endDate: '2020-05',
+            current: false,
+            gpa: '3.85 / 4.0',
+            highlights: [
+              'Dean’s Honors List (6 consecutive semesters)',
+              'President of Cal Tech Developers Club; Organized 500-attendee Hackathon',
+            ],
+          },
+        ],
+      },
+      {
+        id: 'sec-proj',
+        type: 'projects',
+        title: 'Key Projects',
+        visible: true,
+        items: [
+          {
+            id: 'proj-1',
+            title: 'ResuFlow Engine',
+            subtitle: 'Real-time ATS parsing and resume optimizer',
+            link: 'https://github.com/alexvance-ai/resuflow',
+            startDate: '2024-01',
+            endDate: 'Present',
+            description: 'Open-source ATS diagnostic tool utilized by 35,000+ job seekers across tech and finance.',
+            bullets: [
+              'Developed deterministic token matching algorithm delivering 99.4% parsing parity with enterprise Workday ATS.',
+              'Gained 3.2k GitHub stars; featured on Hacker News front page for clean architecture and edge speed.',
+            ],
+            techStack: ['Next.js', 'PostgreSQL', 'Tailwind', 'AI Gateway'],
+          },
+        ],
+      },
+      {
+        id: 'sec-custom-1',
+        type: 'custom',
+        title: 'Awards & Certifications',
+        visible: true,
+        items: [
+          {
+            id: 'cust-1',
+            title: 'AWS Certified Solutions Architect – Professional',
+            subtitle: 'Amazon Web Services (AWS)',
+            date: '2024',
+            description: 'Demonstrated advanced knowledge in complex multi-tier cloud architectures, VPC peering, and serverless scalability.',
+            bullets: [
+              'Ranked in top 5% percentile on practical cloud security scenarios.',
+            ],
+            tags: ['AWS', 'Cloud Architecture', 'Security'],
+          },
+          {
+            id: 'cust-2',
+            title: 'Best Innovation Award (HackSF)',
+            subtitle: 'First Place among 120 global engineering teams',
+            date: '2023',
+            description: 'Built zero-latency collaborative canvas for remote engineering roadmaps.',
+            bullets: [],
+            tags: ['Innovation', 'Hackathon', 'Real-time Web'],
+          },
+        ],
+      },
+    ],
+    atsDiagnostic: {
+      score: 93,
+      formattingScore: 98,
+      keywordsScore: 91,
+      impactScore: 94,
+      completenessScore: 96,
+      strengths: [
+        'Exceptional quantifiable impact metrics (% and $ results in work experience)',
+        'Clear chronological reverse structure favored by Workday, Greenhouse, and Lever',
+        'Strong distribution of technical keywords matching high-growth software roles',
+        'Concise, impactful professional summary with defined target seniority',
+      ],
+      improvements: [
+        'Consider tailoring bullet points with role-specific system scale metrics (e.g. TPS, DAU)',
+        'Ensure Github profile link contains active public repositories matching claimed skill levels',
+      ],
+      missingKeywords: ['GraphQL', 'Kubernetes Helm', 'Datadog APM'],
+      matchedKeywords: ['Next.js', 'PostgreSQL', 'TypeScript', 'Docker', 'AWS', 'CI/CD', 'RAG', 'Microservices', 'Redis'],
+      actionVerbCount: 16,
+      metricCount: 12,
+    },
+  },
+];
+
+export function createBlankResume(userId: string = 'user-google-1'): Resume {
+  return {
+    id: `res-${Date.now()}`,
+    userId,
+    title: 'Untitled Resume',
+    targetRole: 'Software Engineer',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    themeColor: 'cobalt',
+    templateId: 'modern-compact',
+    fontFamily: 'sans',
+    fontSize: 'normal',
+    personalInfo: {
+      fullName: 'Your Name',
+      title: 'Target Professional Role',
+      email: 'you@example.com',
+      phone: '+1 (555) 000-0000',
+      location: 'City, Country',
+      website: '',
+      linkedin: '',
+      github: '',
+      summary: 'A short, engaging 2-3 sentence overview of your career accomplishments, domain expertise, and core strengths.',
+    },
+    sections: [
+      {
+        id: `sec-${Date.now()}-1`,
+        type: 'experience',
+        title: 'Work Experience',
+        visible: true,
+        items: [
+          {
+            id: `exp-${Date.now()}-1`,
+            role: 'Job Title',
+            company: 'Company Name',
+            location: 'Location',
+            startDate: '2022-01',
+            endDate: '',
+            current: true,
+            description: 'Key team responsibilities and scope of work.',
+            bullets: [
+              'Accomplished [X] as measured by [Y], by doing [Z].',
+              'Collaborated across cross-functional teams to deliver key features on schedule.',
+            ],
+          },
+        ],
+      },
+      {
+        id: `sec-${Date.now()}-2`,
+        type: 'skills',
+        title: 'Technical Skills',
+        visible: true,
+        items: [
+          {
+            id: `skg-${Date.now()}-1`,
+            category: 'Core Competencies',
+            skills: [
+              { id: `sk-1`, name: 'Skill 1', level: 'Expert' },
+              { id: `sk-2`, name: 'Skill 2', level: 'Advanced' },
+              { id: `sk-3`, name: 'Skill 3', level: 'Intermediate' },
+            ],
+          },
+        ],
+      },
+      {
+        id: `sec-${Date.now()}-3`,
+        type: 'education',
+        title: 'Education',
+        visible: true,
+        items: [
+          {
+            id: `edu-${Date.now()}-1`,
+            degree: 'Degree or Field of Study',
+            institution: 'University or College Name',
+            location: 'Location',
+            startDate: '2018-09',
+            endDate: '2022-05',
+            current: false,
+            gpa: '',
+            highlights: ['Honors, clubs, or major coursework'],
+          },
+        ],
+      },
+    ],
+  };
+}
