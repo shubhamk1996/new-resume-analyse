@@ -88,7 +88,7 @@ export function AuthGuard({ children, featureName, pageTitle }: AuthGuardProps) 
               Sign In with Google Required
             </h2>
             <p className="text-xs text-muted-foreground leading-relaxed">
-              To access <span className="font-semibold text-foreground">{pageTitle}</span>, save your resumes, and run ATS scans, please authenticate with your Google account.
+              To access <span className="font-semibold text-foreground">{displayTitle}</span>, save your resumes, and run ATS scans, please authenticate with your Google account.
             </p>
           </div>
 
