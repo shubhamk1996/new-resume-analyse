@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useResumeStore } from '@/lib/resume-store';
 import { JobListing } from '@/types/resume';
 import { GoogleAuthModal } from '@/components/google-auth-modal';
+import { AuthGuard } from '@/components/auth-guard';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
@@ -76,9 +77,10 @@ export default function JobsRadarPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      {/* Top Header */}
-      <header className="h-16 border-b border-border bg-card/80 backdrop-blur-md px-4 sm:px-8 flex items-center justify-between sticky top-0 z-30">
+    <AuthGuard featureName="72-Hour AI Job Radar">
+      <div className="min-h-screen bg-background flex flex-col">
+        {/* Top Header */}
+        <header className="h-16 border-b border-border bg-card/80 backdrop-blur-md px-4 sm:px-8 flex items-center justify-between sticky top-0 z-30">
         <div className="flex items-center gap-3">
           <Link
             href="/dashboard"
@@ -365,5 +367,6 @@ export default function JobsRadarPage() {
 
       <GoogleAuthModal open={authModalOpen} onOpenChange={setAuthModalOpen} />
     </div>
+    </AuthGuard>
   );
 }

@@ -20,6 +20,17 @@ interface ResumeStoreState {
   isAiProcessing: boolean;
   aiStatusMessage: string;
 
+  // Subscription & Downloads state (1st download free, then ₹19 for 3 days)
+  downloadsUsed: number;
+  hasActiveSubscription: boolean;
+  subscriptionExpiresAt: string | null;
+
+  // Subscription methods
+  canDownload: () => boolean;
+  recordDownload: () => boolean;
+  activateSubscription: (days?: number) => void;
+  getSubscriptionRemainingHours: () => number;
+
   // Auth actions
   loginWithGoogle: (customUser?: Partial<UserProfile>) => void;
   logout: () => void;
@@ -51,10 +62,10 @@ interface ResumeStoreState {
   setAiStatus: (processing: boolean, message?: string) => void;
 }
 
-const defaultUser: UserProfile = {
+const defaultGoogleUser: UserProfile = {
   id: 'user-google-1',
   name: 'Alex Vance',
-  email: 'alex.vance@techfrontier.io',
+  email: 'alex.vance@gmail.com',
   avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
   provider: 'google',
   neonConnected: true,
@@ -63,11 +74,58 @@ const defaultUser: UserProfile = {
 export const useResumeStore = create<ResumeStoreState>()(
   persist(
     (set, get) => ({
-      user: defaultUser,
+      // Set to defaultGoogleUser so demo users can immediately explore, but unauthenticated users can logout or be prompted
+      user: defaultGoogleUser,
       resumes: sampleResumes,
       activeResumeId: sampleResumes[0].id,
       isAiProcessing: false,
       aiStatusMessage: '',
+
+      // Pricing model: first download is free (downloadsUsed === 0), after that requires ₹19 for 3 days
+      downloadsUsed: 0,
+      hasActiveSubscription: false,
+      subscriptionExpiresAt: null,
+
+      canDownload: () => {
+        const { downloadsUsed, hasActiveSubscription, subscriptionExpiresAt } = get();
+        // 1st download is completely free
+        if (downloadsUsed === 0) return true;
+
+        // Otherwise check if active 3-day subscription is present and valid
+        if (hasActiveSubscription && subscriptionExpiresAt) {
+          const expires = new Date(subscriptionExpiresAt).getTime();
+          if (expires > Date.now()) {
+            return true;
+          }
+        }
+        return false;
+      },
+
+      recordDownload: () => {
+        const can = get().canDownload();
+        if (!can) return false;
+
+        set((state) => ({
+          downloadsUsed: state.downloadsUsed + 1,
+        }));
+        return true;
+      },
+
+      activateSubscription: (days = 3) => {
+        const expiresAt = new Date(Date.now() + days * 24 * 60 * 60 * 1000).toISOString();
+        set({
+          hasActiveSubscription: true,
+          subscriptionExpiresAt: expiresAt,
+        });
+      },
+
+      getSubscriptionRemainingHours: () => {
+        const { hasActiveSubscription, subscriptionExpiresAt } = get();
+        if (!hasActiveSubscription || !subscriptionExpiresAt) return 0;
+        const diff = new Date(subscriptionExpiresAt).getTime() - Date.now();
+        if (diff <= 0) return 0;
+        return Math.ceil(diff / (1000 * 60 * 60));
+      },
 
       loginWithGoogle: (customUser) => {
         const newUser: UserProfile = {
@@ -87,7 +145,6 @@ export const useResumeStore = create<ResumeStoreState>()(
       },
 
       setNeonDbConfig: async (url: string) => {
-        // Validation for postgres/neon format
         if (!url || (!url.startsWith('postgres://') && !url.startsWith('postgresql://'))) {
           return { success: false, message: 'Invalid Neon PostgreSQL connection string.' };
         }
@@ -220,7 +277,6 @@ export const useResumeStore = create<ResumeStoreState>()(
           items: [],
         };
 
-        // Add a default starting item based on section type
         if (type === 'experience') {
           newSec.items = [
             {
@@ -279,7 +335,7 @@ export const useResumeStore = create<ResumeStoreState>()(
             {
               id: `item-${Date.now()}`,
               name: 'Certificate Name',
-              issuer: 'Issuing Organization',
+              issuer: 'Issuer',
               date: '2024',
               url: '',
             },
@@ -442,12 +498,15 @@ export const useResumeStore = create<ResumeStoreState>()(
       },
     }),
     {
-      name: 'resuflow-resume-store-v1',
+      name: 'resuflow-resume-store-v2',
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({
         user: state.user,
         resumes: state.resumes,
         activeResumeId: state.activeResumeId,
+        downloadsUsed: state.downloadsUsed,
+        hasActiveSubscription: state.hasActiveSubscription,
+        subscriptionExpiresAt: state.subscriptionExpiresAt,
       }),
     }
   )

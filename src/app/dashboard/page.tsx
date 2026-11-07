@@ -7,6 +7,7 @@ import { useResumeStore } from '@/lib/resume-store';
 import { GoogleAuthModal } from '@/components/google-auth-modal';
 import { NeonConfigModal } from '@/components/neon-config-modal';
 import { ResumeUploadDialog } from '@/components/resume-upload-dialog';
+import { AuthGuard } from '@/components/auth-guard';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
@@ -83,36 +84,45 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      {/* Top Header */}
-      <header className="h-16 border-b border-border bg-card/80 backdrop-blur-md px-4 sm:px-8 flex items-center justify-between sticky top-0 z-30">
-        <div className="flex items-center gap-3">
-          <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center text-primary-foreground font-black text-sm shadow-md">
-              R
-            </div>
-            <span className="font-display font-extrabold text-base tracking-tight text-foreground">
-              ResuFlow <span className="text-xs px-2 py-0.5 rounded-full bg-secondary text-primary font-mono ml-1 border border-border">AI</span>
+    <AuthGuard featureName="Workspace Dashboard">
+      <div className="min-h-screen bg-background flex flex-col">
+        {/* Top Header */}
+        <header className="h-16 border-b border-border bg-card/80 backdrop-blur-md px-4 sm:px-8 flex items-center justify-between sticky top-0 z-30">
+          <div className="flex items-center gap-3">
+            <Link href="/" className="flex items-center gap-2 group">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center text-primary-foreground font-black text-sm shadow-md">
+                R
+              </div>
+              <span className="font-display font-extrabold text-base tracking-tight text-foreground">
+                ResuFlow <span className="text-xs px-2 py-0.5 rounded-full bg-secondary text-primary font-mono ml-1 border border-border">AI</span>
+              </span>
+            </Link>
+            <div className="h-4 w-px bg-border hidden sm:block" />
+            <span className="text-xs font-semibold text-muted-foreground hidden sm:inline">
+              Workspace Dashboard
             </span>
-          </Link>
-          <div className="h-4 w-px bg-border hidden sm:block" />
-          <span className="text-xs font-semibold text-muted-foreground hidden sm:inline">
-            Workspace Dashboard
-          </span>
-        </div>
+          </div>
 
-        {/* Header Right */}
-        <div className="flex items-center gap-2 sm:gap-3">
-          {/* Neon DB indicator */}
-          <button
-            onClick={() => setNeonModalOpen(true)}
-            className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold border border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/20 transition-colors"
-            title="Neon Serverless PostgreSQL Database Connected"
-          >
-            <Database className="w-3.5 h-3.5" />
-            <span className="hidden md:inline">Neon DB: Connected</span>
-            <span className="md:hidden">Neon</span>
-          </button>
+          {/* Header Right */}
+          <div className="flex items-center gap-2 sm:gap-3">
+            {/* Pricing / Pass status link */}
+            <Link href="/pricing">
+              <Button variant="outline" size="sm" className="h-8 text-xs gap-1 border-primary/30 text-primary hover:bg-primary/10">
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>₹19 Pass</span>
+              </Button>
+            </Link>
+
+            {/* Neon DB indicator */}
+            <button
+              onClick={() => setNeonModalOpen(true)}
+              className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold border border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/20 transition-colors"
+              title="Neon Serverless PostgreSQL Database Connected"
+            >
+              <Database className="w-3.5 h-3.5" />
+              <span className="hidden md:inline">Neon DB: Connected</span>
+              <span className="md:hidden">Neon</span>
+            </button>
 
           <Link href="/ats">
             <Button variant="ghost" size="sm" className="h-8 text-xs gap-1 hidden sm:flex">
@@ -155,7 +165,6 @@ export default function DashboardPage() {
         </div>
       </header>
 
-      {/* Main Dashboard Workspace */}
       <main className="flex-1 max-w-6xl mx-auto w-full p-4 sm:p-8 space-y-6">
         {/* Metric Cards Row */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -356,5 +365,6 @@ export default function DashboardPage() {
       <NeonConfigModal open={neonModalOpen} onOpenChange={setNeonModalOpen} />
       <ResumeUploadDialog open={uploadDialogOpen} onOpenChange={setUploadDialogOpen} />
     </div>
+    </AuthGuard>
   );
 }

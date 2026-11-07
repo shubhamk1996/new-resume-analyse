@@ -1,8 +1,10 @@
 'use client';
 
+import React, { useState } from 'react';
 import { useResumeStore } from '@/lib/resume-store';
 import { ResumeColor, TemplateId } from '@/types/resume';
 import { Button } from '@/components/ui/button';
+import { PaymentModal } from '@/components/payment-modal';
 import { toast } from 'sonner';
 import {
   Palette,
@@ -14,10 +16,24 @@ import {
   RotateCcw,
   Sparkles,
   FileText,
+  Lock,
 } from 'lucide-react';
 
 export function StyleToolbar() {
-  const { getActiveResume, updateActiveResume, duplicateResume } = useResumeStore();
+  const { 
+    getActiveResume, 
+    updateActiveResume, 
+    duplicateResume,
+    downloadsUsed,
+    hasActiveSubscription,
+    canDownload,
+    recordDownload,
+    getSubscriptionRemainingHours
+  } = useResumeStore();
+
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+  const [paywallReason, setPaywallReason] = useState<string>('');
+
   const resume = getActiveResume();
 
   const colors: { id: ResumeColor; label: string; hex: string; bgClass: string }[] = [
@@ -44,6 +60,27 @@ export function StyleToolbar() {
   ];
 
   const handlePrint = () => {
+    // Check download permission
+    const allowed = canDownload();
+    if (!allowed) {
+      setPaywallReason('Your 1st free resume download has already been claimed. Unlock unlimited downloads and all services for 3 days for just ₹19.');
+      setIsPaymentModalOpen(true);
+      return;
+    }
+
+    // First download is free, or user has active pass
+    if (downloadsUsed === 0) {
+      toast.info('Claiming your 1st Free Resume Download!', {
+        description: 'Next downloads & services will require the ₹19 / 3-Day Pro Pass.'
+      });
+    } else {
+      const hours = getSubscriptionRemainingHours();
+      toast.success('Pro Pass Verified!', {
+        description: `Unlimited downloads active (${hours}h remaining).`
+      });
+    }
+
+    recordDownload();
     window.print();
   };
 
@@ -91,6 +128,18 @@ export function StyleToolbar() {
 
         {/* Action Buttons */}
         <div className="flex items-center gap-1.5 ml-auto">
+          {downloadsUsed === 0 && !hasActiveSubscription && (
+            <span className="hidden lg:inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-semibold">
+              <Sparkles className="w-3 h-3" />
+              1 Free Download
+            </span>
+          )}
+          {hasActiveSubscription && (
+            <span className="hidden lg:inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20 text-[10px] font-semibold">
+              <Sparkles className="w-3 h-3" />
+              Pass: {getSubscriptionRemainingHours()}h left
+            </span>
+          )}
           <Button
             variant="outline"
             size="sm"
@@ -190,6 +239,12 @@ export function StyleToolbar() {
           ))}
         </div>
       </div>
+      {/* Payment Modal */}
+      <PaymentModal
+        isOpen={isPaymentModalOpen}
+        onClose={() => setIsPaymentModalOpen(false)}
+        reason={paywallReason}
+      />
     </div>
   );
 }

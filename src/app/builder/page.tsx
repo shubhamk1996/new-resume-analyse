@@ -9,6 +9,7 @@ import { StyleToolbar } from '@/components/studio/style-toolbar';
 import { ResumeCanvas } from '@/components/studio/resume-canvas';
 import { GoogleAuthModal } from '@/components/google-auth-modal';
 import { ResumeUploadDialog } from '@/components/resume-upload-dialog';
+import { AuthGuard } from '@/components/auth-guard';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -220,7 +221,9 @@ function BuilderContent() {
 export default function BuilderPage() {
   return (
     <Suspense fallback={<div className="p-12 text-center text-sm text-muted-foreground">Loading Resume Studio...</div>}>
-      <BuilderContent />
+      <AuthGuard featureName="Enhancv-Style Resume Studio">
+        <BuilderContent />
+      </AuthGuard>
     </Suspense>
   );
 }

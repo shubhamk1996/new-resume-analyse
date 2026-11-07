@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useResumeStore } from '@/lib/resume-store';
 import { GoogleAuthModal } from '@/components/google-auth-modal';
+import { AuthGuard } from '@/components/auth-guard';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
@@ -101,9 +102,10 @@ Requirements:
     score >= 85 ? 'text-emerald-500' : score >= 70 ? 'text-amber-500' : 'text-rose-500';
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      {/* Top Bar */}
-      <header className="h-16 border-b border-border bg-card/80 backdrop-blur-md px-4 sm:px-8 flex items-center justify-between sticky top-0 z-30">
+    <AuthGuard featureName="ATS Scanner & Job Matcher">
+      <div className="min-h-screen bg-background flex flex-col">
+        {/* Top Bar */}
+        <header className="h-16 border-b border-border bg-card/80 backdrop-blur-md px-4 sm:px-8 flex items-center justify-between sticky top-0 z-30">
         <div className="flex items-center gap-3">
           <Link
             href="/dashboard"
@@ -384,5 +386,6 @@ Requirements:
 
       <GoogleAuthModal open={authModalOpen} onOpenChange={setAuthModalOpen} />
     </div>
+    </AuthGuard>
   );
 }

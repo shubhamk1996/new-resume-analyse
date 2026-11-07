@@ -77,6 +77,9 @@ export default function HomePage() {
               <span className="w-1.5 h-1.5 rounded-full bg-accent"></span>
               72h Job Radar
             </Link>
+            <Link href="/pricing" className="hover:text-foreground transition-colors text-primary font-bold">
+              Pricing (₹19 Pass)
+            </Link>
           </nav>
         </div>
 
